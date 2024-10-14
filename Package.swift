@@ -16,7 +16,7 @@ let package = Package(
     .iOS("13.0"),
   ],
   products: [
-    .library(name: "firebase-core-target", targets: ["firebase_core_target"]),
+    .library(name: "firebase-core-wrapper", targets: ["firebase_core_target"]),
   ],
   targets: [
     .target(
