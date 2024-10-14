@@ -22,12 +22,12 @@ let package = Package(
     .target(
       name: "firebase_core_target",
       dependencies:[
-        .target(name: "firebase_core")
+        .target(name: "firebase_core_wrap")
       ],
       path: "Sources/firebase_core_target"
     ),
     .target(
-      name: "firebase_core",
+      name: "firebase_core_wrap",
       path: "packages/firebase_core/firebase_core/ios/firebase_core",
       exclude: ["Package.swift"],
       publicHeadersPath: "Sources/firebase_core/include"
