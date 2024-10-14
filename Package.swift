@@ -13,21 +13,28 @@ import PackageDescription
 let package = Package(
   name: "remote_firebase_core",
   platforms: [
-    .iOS("13.0"),
+    .iOS("13.0")
   ],
   products: [
-    .library(name: "firebase-core-wrapper", targets: ["firebase_core_target"]),
+    .library(name: "firebase-core-wrapper", targets: ["firebase_core_target"])
+  ],
+  dependencies: [
+    .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "11.0.0")
   ],
   targets: [
     .target(
       name: "firebase_core_target",
-      dependencies:[
+      dependencies: [
         .target(name: "firebase_core_wrap")
       ],
       path: "Sources/firebase_core_target"
     ),
     .target(
       name: "firebase_core_wrap",
+      dependencies: [
+        // No product for firebase-core so we pull in the smallest one
+        .product(name: "FirebaseInstallations", package: "firebase-ios-sdk")
+      ],
       path: "packages/firebase_core/firebase_core/ios/firebase_core",
       exclude: ["Package.swift"],
       publicHeadersPath: "Sources/firebase_core/include"
