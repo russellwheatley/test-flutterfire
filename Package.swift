@@ -8,6 +8,8 @@
 import Foundation
 import PackageDescription
 
+let library_version = "3.6.0"
+
 // Using this as a wrapper around firebase core, this allows retrieval of it via remote package
 // whilst also preserving firebase core's Package.swift file needed by Flutter
 let package = Package(
@@ -37,7 +39,11 @@ let package = Package(
       ],
       path: "packages/firebase_core/firebase_core/ios/firebase_core",
       exclude: ["Package.swift"],
-      publicHeadersPath: "Sources/firebase_core/include"
+      publicHeadersPath: "Sources/firebase_core/include",
+      cSettings: [
+        .define("LIBRARY_VERSION", to: "\"\(library_version)\""),
+        .define("LIBRARY_NAME", to: "\"flutter-fire-core\""),
+      ]
     ),
   ]
 )
