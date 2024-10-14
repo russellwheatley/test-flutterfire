@@ -38,7 +38,7 @@ let package = Package(
         .product(name: "FirebaseInstallations", package: "firebase-ios-sdk")
       ],
       path: "packages/firebase_core/firebase_core/ios/firebase_core",
-      exclude: ["Package.swift"],
+      exclude: ["Package.swift", "Sources/firebase_core/FLTFirebaseCorePlugin.m", "Sources/firebase_core/FLTFirebasePlugin.m", "Sources/firebase_core/FLTFirebasePluginRegistry.m", "Sources/firebase_core/messages.g.m"],
       publicHeadersPath: "Sources/firebase_core/include",
       cSettings: [
         .define("LIBRARY_VERSION", to: "\"\(library_version)\""),
