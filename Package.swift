@@ -18,32 +18,18 @@ let package = Package(
     .iOS("13.0")
   ],
   products: [
-    .library(name: "firebase-core-wrapper", targets: ["firebase_core_target"])
+    .library(name: "firebase-core-shared", targets: ["firebase_core_shared"])
   ],
   dependencies: [
     .package(url: "https://github.com/firebase/firebase-ios-sdk", from: "11.0.0")
   ],
   targets: [
     .target(
-      name: "firebase_core_target",
+      name: "firebase_core_shared",
       dependencies: [
-        .target(name: "firebase_core_wrap")
-      ],
-      path: "Sources/firebase_core_target"
-    ),
-    .target(
-      name: "firebase_core_wrap",
-      dependencies: [
-        // No product for firebase-core so we pull in the smallest one
         .product(name: "FirebaseInstallations", package: "firebase-ios-sdk")
       ],
-      path: "packages/firebase_core/firebase_core/ios/firebase_core",
-      exclude: ["Package.swift", "Sources/firebase_core/FLTFirebaseCorePlugin.m", "Sources/firebase_core/FLTFirebasePlugin.m", "Sources/firebase_core/FLTFirebasePluginRegistry.m", "Sources/firebase_core/messages.g.m"],
-      publicHeadersPath: "Sources/firebase_core/include",
-      cSettings: [
-        .define("LIBRARY_VERSION", to: "\"\(library_version)\""),
-        .define("LIBRARY_NAME", to: "\"flutter-fire-core\""),
-      ]
+      path: "Sources/firebase_core_shared"
     ),
   ]
 )
