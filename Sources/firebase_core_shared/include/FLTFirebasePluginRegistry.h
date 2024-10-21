@@ -3,7 +3,7 @@
 // found in the LICENSE file.
 
 #import <Foundation/Foundation.h>
-#import "include/firebase_core/FLTFirebasePlugin.h"
+#import "FLTFirebasePlugin.h"
 
 @interface FLTFirebasePluginRegistry : NSObject
 /**
