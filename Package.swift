@@ -8,54 +8,54 @@
 import Foundation
 import PackageDescription
 
-enum ConfigurationError: Error {
-  case fileNotFound(String)
-  case parsingError(String)
-  case invalidFormat(String)
-}
+// enum ConfigurationError: Error {
+//   case fileNotFound(String)
+//   case parsingError(String)
+//   case invalidFormat(String)
+// }
 
-func loadFirebaseSDKVersion() throws -> String {
-  let firebaseCoreScriptPath = NSString.path(withComponents: [
-    "packages",
-    "firebase_core",
-    "firebase_core",
-    "ios",
-    "firebase_sdk_version.rb",
-  ])
+// func loadFirebaseSDKVersion() throws -> String {
+//   let firebaseCoreScriptPath = NSString.path(withComponents: [
+//     "packages",
+//     "firebase_core",
+//     "firebase_core",
+//     "ios",
+//     "firebase_sdk_version.rb",
+//   ])
 
-  do {
-    let content = try String(contentsOfFile: firebaseCoreScriptPath, encoding: .utf8)
-    let pattern = #"def firebase_sdk_version!\(\)\n\s+'([^']+)'\nend"#
-    if let regex = try? NSRegularExpression(pattern: pattern, options: []),
-       let match = regex.firstMatch(
-         in: content,
-         range: NSRange(content.startIndex..., in: content)
-       ) {
-      if let versionRange = Range(match.range(at: 1), in: content) {
-        return String(content[versionRange])
-      } else {
-        throw ConfigurationError.invalidFormat("Invalid format in firebase_sdk_version.rb")
-      }
-    } else {
-      throw ConfigurationError.parsingError("No match found in firebase_sdk_version.rb")
-    }
-  } catch {
-    throw ConfigurationError
-      .fileNotFound("Error loading or parsing firebase_sdk_version.rb: \(error)")
-  }
-}
+//   do {
+//     let content = try String(contentsOfFile: firebaseCoreScriptPath, encoding: .utf8)
+//     let pattern = #"def firebase_sdk_version!\(\)\n\s+'([^']+)'\nend"#
+//     if let regex = try? NSRegularExpression(pattern: pattern, options: []),
+//        let match = regex.firstMatch(
+//          in: content,
+//          range: NSRange(content.startIndex..., in: content)
+//        ) {
+//       if let versionRange = Range(match.range(at: 1), in: content) {
+//         return String(content[versionRange])
+//       } else {
+//         throw ConfigurationError.invalidFormat("Invalid format in firebase_sdk_version.rb")
+//       }
+//     } else {
+//       throw ConfigurationError.parsingError("No match found in firebase_sdk_version.rb")
+//     }
+//   } catch {
+//     throw ConfigurationError
+//       .fileNotFound("Error loading or parsing firebase_sdk_version.rb: \(error)")
+//   }
+// }
 
-let firebase_sdk_version_string: String
+// let firebase_sdk_version_string: String
 
-do {
-  firebase_sdk_version_string = try loadFirebaseSDKVersion()
-} catch {
-  fatalError("Failed to load configuration: \(error)")
-}
+// do {
+//   firebase_sdk_version_string = try loadFirebaseSDKVersion()
+// } catch {
+//   fatalError("Failed to load configuration: \(error)")
+// }
 
-guard let firebase_sdk_version = Version(firebase_sdk_version_string) else {
-  fatalError("Invalid Firebase SDK version: \(firebase_sdk_version_string)")
-}
+// guard let firebase_sdk_version = Version(firebase_sdk_version_string) else {
+//   fatalError("Invalid Firebase SDK version: \(firebase_sdk_version_string)")
+// }
 
 // Shared Swift package manager code for firebase core
 let package = Package(
@@ -75,7 +75,7 @@ let package = Package(
       dependencies: [
         .product(name: "FirebaseInstallations", package: "firebase-ios-sdk"),
       ],
-      path: "packages/firebase_core_ios_shared",
+      path: "Sources/firebase_core_shared",
       publicHeadersPath: "include"
     ),
   ]
