@@ -1,8 +1,11 @@
 // Copyright 2020 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
-
+#if __has_include("include/firebase_core/FLTFirebasePlugin.h")
 #import "include/firebase_core/FLTFirebasePlugin.h"
+#else
+#import "include/FLTFirebasePlugin.h"
+#endif
 
 // Firebase default app name.
 NSString *_Nonnull const kFIRDefaultAppNameIOS = @"__FIRAPP_DEFAULT";
