@@ -16,13 +16,8 @@ enum ConfigurationError: Error {
 
 func loadFirebaseSDKVersion() throws -> String {
 
-  let firebaseCoreScriptPath = NSString.path(withComponents: [
-    "packages",
-    "firebase_core",
-    "firebase_core",
-    "ios",
-    "firebase_sdk_version.rb",
-  ])
+  let packageDirectory = URL(fileURLWithPath: #file).deletingLastPathComponent()
+  let firebaseCoreScriptPath = packageDirectory.appendingPathComponent("packages/firebase_core/firebase_core/ios/firebase_sdk_version.rb").path
 
   do {
     let content = try String(contentsOfFile: firebaseCoreScriptPath, encoding: .utf8)
