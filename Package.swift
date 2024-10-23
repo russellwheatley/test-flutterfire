@@ -15,19 +15,8 @@ enum ConfigurationError: Error {
 }
 
 func loadFirebaseSDKVersion() throws -> String {
-   let rootDirectory = URL(fileURLWithPath: #file)
-    .deletingLastPathComponent() // Remove the file name
-    .deletingLastPathComponent() // Remove the last directory (e.g., "Sources")
-    .deletingLastPathComponent() // Remove the package directory
-    .path
-
-
-  print("Package.swift is being executed at: \(#file)")
-
-  print("rootDirectory \(rootDirectory)")
 
   let firebaseCoreScriptPath = NSString.path(withComponents: [
-    rootDirectory,
     "packages",
     "firebase_core",
     "firebase_core",
