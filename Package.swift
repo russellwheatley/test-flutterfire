@@ -18,6 +18,10 @@ func loadFirebaseSDKVersion() throws -> String {
   let rootDirectory = String(URL(string: #file)!.deletingLastPathComponent().absoluteString
   .dropLast())
 
+  print("Package.swift is being executed at: \(#file)")
+
+  print("rootDirectory \(rootDirectory)")
+
   let firebaseCoreScriptPath = NSString.path(withComponents: [
     rootDirectory,
     "packages",
@@ -65,7 +69,8 @@ guard let firebase_sdk_version = Version(firebase_sdk_version_string) else {
 let package = Package(
   name: "remote_firebase_core",
   platforms: [
-    .iOS("13.0")
+    .iOS("13.0"),
+    .macOS("10.15"),
   ],
   products: [
     .library(name: "firebase-core-shared", targets: ["firebase_core_shared"]),
