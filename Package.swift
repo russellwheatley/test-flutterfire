@@ -75,7 +75,7 @@ let package = Package(
       dependencies: [
         .product(name: "FirebaseInstallations", package: "firebase-ios-sdk"),
       ],
-      path: "Sources/firebase_core_shared",
+      path: "packages/firebase_core_ios_shared",
       publicHeadersPath: "include"
     ),
   ]
