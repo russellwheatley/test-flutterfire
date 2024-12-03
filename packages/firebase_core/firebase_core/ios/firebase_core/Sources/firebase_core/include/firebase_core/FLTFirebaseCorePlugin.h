@@ -17,7 +17,7 @@
 #elif __has_include("firebase_core/include/firebase_core/messages.g.h")
 #import "firebase_core/include/firebase_core/messages.g.h"
 #else
-#import "messages.g.h"
+@import firebase_core_shared;
 #endif
 
 @interface FLTFirebaseCorePlugin
