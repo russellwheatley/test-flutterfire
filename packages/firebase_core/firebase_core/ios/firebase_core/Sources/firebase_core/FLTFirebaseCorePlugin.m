@@ -17,7 +17,7 @@
 #if __has_include("include/firebase_core/messages.g.h")
 #import "include/firebase_core/messages.g.h"
 #else
-@import firebase_core;
+#import "include/messages.g.h"
 #endif
 
 @implementation FLTFirebaseCorePlugin {
