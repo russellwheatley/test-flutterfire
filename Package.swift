@@ -7,8 +7,42 @@
 
 import Foundation
 import PackageDescription
-// TODO - this needs updating
-let library_version_string = "3.8.0"
+
+enum ConfigurationError: Error {
+  case fileNotFound(String)
+  case parsingError(String)
+  case invalidFormat(String)
+}
+
+func loadPubspecVersion() throws -> String {
+  let pubspecPath = NSString.path(withComponents: [
+    "packages",
+    "firebase_core",
+    "firebase_core",
+    "pubspec.yaml",
+  ])
+  do {
+    let yamlString = try String(contentsOfFile: pubspecPath, encoding: .utf8)
+    if let versionLine = yamlString.split(separator: "\n")
+      .first(where: { $0.starts(with: "version:") }) {
+      let version = versionLine.split(separator: ":")[1].trimmingCharacters(in: .whitespaces)
+      return version.replacingOccurrences(of: "+", with: "-")
+    } else {
+      throw ConfigurationError.invalidFormat("No version line found in pubspec.yaml")
+    }
+  } catch {
+    throw ConfigurationError.fileNotFound("Error loading or parsing pubspec.yaml: \(error)")
+  }
+}
+
+let library_version_string: String
+
+do {
+  library_version_string = try loadPubspecVersion()
+} catch {
+  fatalError("Failed to load configuration: \(error)")
+}
+
 // Shared Swift package manager code for firebase core
 let package = Package(
   name: "remote_firebase_core",
