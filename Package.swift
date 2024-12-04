@@ -14,19 +14,20 @@ enum ConfigurationError: Error {
   case invalidFormat(String)
 }
 
-let rootDirectory = URL(fileURLWithPath: #file).deletingLastPathComponent()
+let packageURL = URL(fileURLWithPath: #file).deletingLastPathComponent()
+let fileURL = packageURL.appendingPathComponent("packages").appendingPathComponent("firebase_core").appendingPathComponent("firebase_core").appendingPathComponent("pubspec.yaml")
 
 
 func loadPubspecVersion() throws -> String {
-  let pubspecPath = NSString.path(withComponents: [
-    rootDirectory.path,
-    "packages",
-    "firebase_core",
-    "firebase_core",
-    "pubspec.yaml",
-  ])
+  // let pubspecPath = NSString.path(withComponents: [
+  //   rootDirectory,
+  //   "packages",
+  //   "firebase_core",
+  //   "firebase_core",
+  //   "pubspec.yaml",
+  // ])
   do {
-    let yamlString = try String(contentsOfFile: pubspecPath, encoding: .utf8)
+    let yamlString = try String(contentsOfFile: fileURL.absoluteString, encoding: .utf8)
     if let versionLine = yamlString.split(separator: "\n")
       .first(where: { $0.starts(with: "version:") }) {
       let version = versionLine.split(separator: ":")[1].trimmingCharacters(in: .whitespaces)
