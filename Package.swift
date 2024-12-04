@@ -40,10 +40,30 @@ func loadPubspecVersion() throws -> String {
   }
 }
 
+let versionFileURL = packageURL.appendingPathComponent("version.txt")
+
+let rootDirectory = String(URL(string: #file)!.deletingLastPathComponent().absoluteString
+  .dropLast())
+
+func loadVersionFromFile() throws -> String {
+  let versionPath = NSString.path(withComponents: [
+    rootDirectory,
+    "Sources",
+    "firebase_core_shared",
+    "version.txt",
+  ])
+  do {
+    let versionString = try String(contentsOfFile: versionPath, encoding: .utf8)
+    return versionString.trimmingCharacters(in: .whitespacesAndNewlines)
+  } catch {
+    throw ConfigurationError.fileNotFound("Error loading or parsing version.txt: \(error)")
+  }
+}
+
 let library_version_string: String
 
 do {
-  library_version_string = try loadPubspecVersion()
+  library_version_string = try loadVersionFromFile()
 } catch {
   fatalError("Failed to load configuration: \(error)")
 }
