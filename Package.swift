@@ -14,10 +14,12 @@ enum ConfigurationError: Error {
   case invalidFormat(String)
 }
 
-let rootDirectory = String(URL(string: #file)!.deletingLastPathComponent().absoluteString)
+let rootDirectory = URL(fileURLWithPath: #file).deletingLastPathComponent()
+
 
 func loadPubspecVersion() throws -> String {
   let pubspecPath = NSString.path(withComponents: [
+    rootDirectory.path,
     "packages",
     "firebase_core",
     "firebase_core",
