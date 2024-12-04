@@ -35,7 +35,7 @@ void main(List<String> args) async {
     }
   }
   // Update the version in root Package.swift
-  updateSharedCoreVersion();
+  updateSharedCoreVersion(firebaseiOSVersion);
 }
 
 Future<melos.MelosWorkspace> getMelosWorkspace() async {
@@ -73,7 +73,7 @@ String getFirebaseiOSVersion(File firebaseCoreIosSdkVersion) {
   }
 }
 
-void updateSharedCoreVersion(){
+void updateSharedCoreVersion(String firebaseiOSVersion) {
   // Define the path to the pubspec.yaml file
   const pubspecPath = 'packages/firebase_core/firebase_core/pubspec.yaml';
 
@@ -109,13 +109,20 @@ void updateSharedCoreVersion(){
   final packageSwiftContent = packageSwiftFile.readAsStringSync();
 
   // Update the library_version_string with the new version
-  final updatedPackageSwiftContent = packageSwiftContent.replaceAll(
-    RegExp(r'let library_version_string: String = "\d+\.\d+\.\d+"'),
-    'let library_version_string: String = "$version"',
+  final updatedFirebaseCoreVersion = packageSwiftContent.replaceAll(
+    RegExp('let firebase_core_version: String = "[^"]+"'),
+    'let firebase_core_version: String = "$version"',
+  );
+
+  final updatedFirebaseIosVersion = updatedFirebaseCoreVersion.replaceAll(
+    RegExp('let firebase_ios_sdk_version: String = "[^"]+"'),
+    'let firebase_ios_sdk_version: String = "$firebaseiOSVersion"',
   );
 
   // Write the updated content back to Package.swift
-  packageSwiftFile.writeAsStringSync(updatedPackageSwiftContent);
+  packageSwiftFile.writeAsStringSync(updatedFirebaseIosVersion);
 
-  print('Updated Package.swift with version $version');
+  print(
+    'Updated Package.swift with firebase_core version: $version & firebase-ios-sdk version: $firebaseiOSVersion',
+  );
 }
