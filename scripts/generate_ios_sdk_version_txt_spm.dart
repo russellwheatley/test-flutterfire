@@ -6,6 +6,7 @@ import 'package:melos/melos.dart' as melos;
 import 'package:glob/glob.dart';
 import 'dart:io';
 import 'package:cli_util/cli_logging.dart' as logging;
+import 'package:yaml/yaml.dart';
 
 // Used to generate a simple txt file for Package.swift file to parse in order to use correct firebase-ios-sdk version
 
@@ -33,6 +34,8 @@ void main(List<String> args) async {
       versionFile.writeAsStringSync(firebaseiOSVersion);
     }
   }
+  // Update the version in root Package.swift
+  updateSharedCoreVersion();
 }
 
 Future<melos.MelosWorkspace> getMelosWorkspace() async {
@@ -68,4 +71,51 @@ String getFirebaseiOSVersion(File firebaseCoreIosSdkVersion) {
   } else {
     throw Exception('firebase_sdk_version.rb file does not exist.');
   }
+}
+
+void updateSharedCoreVersion(){
+  // Define the path to the pubspec.yaml file
+  const pubspecPath = 'packages/firebase_core/firebase_core/pubspec.yaml';
+
+  // Read the pubspec.yaml file
+  final pubspecFile = File(pubspecPath);
+  if (!pubspecFile.existsSync()) {
+    print('Error: pubspec.yaml file not found at $pubspecPath');
+    return;
+  }
+
+  // Parse the YAML content
+  final pubspecContent = pubspecFile.readAsStringSync();
+  final pubspecYaml = loadYaml(pubspecContent);
+
+  // Extract the version
+  final version = pubspecYaml['version'];
+  if (version == null) {
+    print('Error: Version not found in pubspec.yaml');
+    return;
+  }
+
+  // Define the path to the Package.swift file
+  const packageSwiftPath = 'Package.swift';
+
+  // Read the Package.swift file
+  final packageSwiftFile = File(packageSwiftPath);
+  if (!packageSwiftFile.existsSync()) {
+    print('Error: Package.swift file not found at $packageSwiftPath');
+    return;
+  }
+
+  // Read the content of Package.swift
+  final packageSwiftContent = packageSwiftFile.readAsStringSync();
+
+  // Update the library_version_string with the new version
+  final updatedPackageSwiftContent = packageSwiftContent.replaceAll(
+    RegExp(r'let library_version_string: String = "\d+\.\d+\.\d+"'),
+    'let library_version_string: String = "$version"',
+  );
+
+  // Write the updated content back to Package.swift
+  packageSwiftFile.writeAsStringSync(updatedPackageSwiftContent);
+
+  print('Updated Package.swift with version $version');
 }
