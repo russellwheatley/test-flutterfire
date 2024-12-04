@@ -27,7 +27,7 @@ func loadPubspecVersion() throws -> String {
   //   "pubspec.yaml",
   // ])
   do {
-    let yamlString = try String(contentsOfFile: fileURL.relativePath, encoding: .utf8)
+    let yamlString = try String(contentsOfFile: fileURL.path(), encoding: .utf8)
     if let versionLine = yamlString.split(separator: "\n")
       .first(where: { $0.starts(with: "version:") }) {
       let version = versionLine.split(separator: ":")[1].trimmingCharacters(in: .whitespaces)
